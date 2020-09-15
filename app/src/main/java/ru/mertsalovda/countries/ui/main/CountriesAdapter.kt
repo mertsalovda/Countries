@@ -1,13 +1,17 @@
 package ru.mertsalovda.countries.ui.main
 
-import android.net.Uri
+import android.graphics.drawable.PictureDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.databinding.ItemCountryBinding
 import ru.mertsalovda.countries.models.data.Country
+import ru.mertsalovda.countries.utils.glide.GlideApp
+import ru.mertsalovda.countries.utils.glide.SvgSoftwareLayerSetter
+
 
 class CountriesAdapter(private val listener: (Country) -> Unit) :
     RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>() {
@@ -57,11 +61,15 @@ class CountriesAdapter(private val listener: (Country) -> Unit) :
 
         fun bind(item: Country, listener: (Country) -> Unit) {
             itemView.setOnClickListener { listener.invoke(item) }
-            // Загружаю изображение если .svg
-                GlideToVectorYou
-                    .init()
-                    .with(itemView.context)
-                    .load(Uri.parse(item.flag), binding.ivFlag)
+            // Загружаю изображение .svg
+            GlideApp.with(itemView.context)
+                .`as`(PictureDrawable::class.java)
+                .transition(withCrossFade())
+                .error(R.drawable.ic_baseline_error_24)
+                .load(item.flag)
+//                .listener(SvgSoftwareLayerSetter())
+                .into(binding.ivFlag)
+
             binding.tvCountryName.text = item.name
         }
     }
