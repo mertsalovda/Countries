@@ -2,35 +2,17 @@ package ru.mertsalovda.countries.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.mertsalovda.countries.R
-import ru.mertsalovda.countries.models.data.Country
+import ru.mertsalovda.countries.repositories.api.ApiUtils
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: CountriesAdapter
-
-    private val countryList = listOf<Country>(
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf()),
-        Country("Russia", "https://restcountries.eu/data/rus.svg", listOf(), listOf(), listOf())
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +41,14 @@ class MainActivity : AppCompatActivity() {
             it.adapter = adapter
             it.layoutManager = layoutManager
         }
-        adapter.updateData(countryList)
+
+        ApiUtils.apiService!!
+            .getAllCountries()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                adapter.updateData(it)
+            }, {})
     }
 
     private fun initViewModel() {
