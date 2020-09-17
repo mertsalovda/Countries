@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.repositories.api.ApiUtils
+import ru.mertsalovda.countries.ui.detail.DetailActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,13 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        adapter = CountriesAdapter {
-            Snackbar.make(
-                rv_country_list,
-                "Click on ${it.name}",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
+        adapter = CountriesAdapter { DetailActivity.start(this, it.name) }
         val layoutManager = LinearLayoutManager(this)
 
         rv_country_list.also {
