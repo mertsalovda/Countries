@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="0dp"
-    app:elevation="4dp">
+    android:layout_margin="@dimen/spacing_tiny_4"
+    app:cardCornerRadius="@dimen/corner_item_list_0"
+    app:elevation="@dimen/elevate_item_list_4">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,11 +14,11 @@
 
         <ImageView
             android:id="@+id/iv_flag"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="@dimen/icon_size_48"
+            android:layout_height="@dimen/icon_size_48"
+            android:layout_marginStart="@dimen/spacing_normal_16"
+            android:layout_marginTop="@dimen/spacing_small_8"
+            android:layout_marginBottom="@dimen/spacing_small_8"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,13 @@
 
         <TextView
             android:id="@+id/tv_country_name"
-            android:layout_width="wrap_content"
+            style="@style/TextView.CountryNameStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:layout_marginStart="@dimen/spacing_normal_16"
+            android:layout_marginEnd="@dimen/spacing_normal_16"
             app:layout_constraintBottom_toBottomOf="@+id/iv_flag"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_flag"
             app:layout_constraintTop_toTopOf="@+id/iv_flag"
             tools:text="Russia" />

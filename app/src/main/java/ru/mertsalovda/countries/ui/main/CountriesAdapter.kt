@@ -62,13 +62,13 @@ class CountriesAdapter(private val listener: (Country) -> Unit) :
         fun bind(item: Country, listener: (Country) -> Unit) {
             itemView.setOnClickListener { listener.invoke(item) }
             // Загружаю изображение .svg
-//            GlideApp.with(itemView.context)
-//                .`as`(PictureDrawable::class.java)
-//                .transition(withCrossFade())
-//                .error(R.drawable.ic_baseline_error_24)
-//                .load(item.flag)
-////                .listener(SvgSoftwareLayerSetter())
-//                .into(binding.ivFlag)
+            GlideApp.with(itemView.context)
+                .`as`(PictureDrawable::class.java)
+                .transition(withCrossFade())
+                .error(R.drawable.ic_baseline_error_24)
+                .load(item.flag)
+                .listener(SvgSoftwareLayerSetter())
+                .into(binding.ivFlag)
 
             binding.tvCountryName.text = item.name
         }

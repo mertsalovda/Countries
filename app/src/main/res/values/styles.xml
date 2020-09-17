@@ -9,4 +9,9 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="TextView.CountryNameStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/font_large_20</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
