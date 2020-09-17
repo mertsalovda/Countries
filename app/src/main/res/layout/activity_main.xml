@@ -37,7 +37,11 @@
             android:id="@+id/rv_country_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_country"/>
+            tools:visibility="gone" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include
+        layout="@layout/error_layout"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
