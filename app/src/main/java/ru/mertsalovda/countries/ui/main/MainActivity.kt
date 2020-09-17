@@ -25,11 +25,19 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         initView()
     }
 
+    /**
+     * Настройка Toolbar
+     *
+     */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Страны"
     }
 
+    /**
+     * Инициализировать view-компоненты и настроить слушателей
+     *
+     */
     private fun initView() {
         adapter = CountriesAdapter { DetailActivity.start(this, it.name) }
         val layoutManager = LinearLayoutManager(this)
@@ -52,6 +60,10 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         })
     }
 
+    /**
+     * Инициализировать MainViewModel и запустить обновление списка
+     *
+     */
     private fun initViewModel() {
         viewModel =
             ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
@@ -62,12 +74,20 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         viewModel.load()
     }
 
+    /**
+     * Показать заглушку и скрыть список
+     *
+     */
     private fun showError() {
         rv_country_list.visibility = View.GONE
         iv_error.visibility = View.VISIBLE
         tv_error.visibility = View.VISIBLE
     }
 
+    /**
+     * Скрыть заглушку и показать список
+     *
+     */
     private fun hideError() {
         rv_country_list.visibility = View.VISIBLE
         iv_error.visibility = View.GONE

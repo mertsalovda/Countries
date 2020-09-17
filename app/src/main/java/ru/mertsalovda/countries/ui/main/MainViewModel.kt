@@ -15,6 +15,10 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: MutableLiveData<Boolean> = _isLoading
 
+    /**
+     * Загрузить данные из репозитория
+     *
+     */
     @SuppressLint("CheckResult")
     fun load() {
         isLoading.postValue(true)

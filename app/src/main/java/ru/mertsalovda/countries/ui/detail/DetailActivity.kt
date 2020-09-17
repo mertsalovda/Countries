@@ -5,13 +5,13 @@ import android.content.Intent
 import android.graphics.drawable.PictureDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_detail.*
 import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.extensions.printInColumn
-import ru.mertsalovda.countries.repositories.api.ApiUtils
+import ru.mertsalovda.countries.models.data.Country
 import ru.mertsalovda.countries.utils.glide.GlideApp
 import ru.mertsalovda.countries.utils.glide.SvgSoftwareLayerSetter
 
@@ -27,6 +27,8 @@ class DetailActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
+    private lateinit var viewModel: DetailViewModel
     private lateinit var countryName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,40 +37,52 @@ class DetailActivity : AppCompatActivity() {
         countryName = intent.getStringExtra(COUNTRY_NAME) ?: ""
 
         initToolbar()
-        initView()
         initViewModel()
+        initView()
     }
 
+    /**
+     * Настройка Toolbar
+     *
+     */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = countryName
     }
 
+    /**
+     * Привязка к данным
+     *
+     */
     private fun initView() {
-
-        ApiUtils.apiService!!
-            .getCountryByName(countryName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val country = it.first { c -> c.name == countryName }
-
-                tv_name.text = country.name
-                tv_language.text = country.languages.printInColumn()
-                tv_currency.text = country.currencies.printInColumn()
-                tv_timezone.text = country.timezones.printInColumn()
-
-                GlideApp.with(applicationContext)
-                    .`as`(PictureDrawable::class.java)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_baseline_error_24)
-                    .load(country.flag)
-                    .listener(SvgSoftwareLayerSetter())
-                    .into(iv_flag)
-            }, {})
+        viewModel.country.observe(this, Observer { country(it) })
     }
 
+    /**
+     * Отобразить данные на экране
+     *
+     */
+    private fun country(country: Country){
+        tv_name.text = country.name
+        tv_language.text = country.languages.printInColumn()
+        tv_currency.text = country.currencies.printInColumn()
+        tv_timezone.text = country.timezones.printInColumn()
+
+        GlideApp.with(applicationContext)
+            .`as`(PictureDrawable::class.java)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.ic_baseline_error_24)
+            .load(country.flag)
+            .listener(SvgSoftwareLayerSetter())
+            .into(iv_flag)
+    }
+
+    /**
+     * Созание DetailViewModel и загрузка данных из репозитория.
+     *
+     */
     private fun initViewModel() {
-        // TODO("Not yet implemented")
+        viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(DetailViewModel::class.java)
+        viewModel.load(countryName)
     }
 }
