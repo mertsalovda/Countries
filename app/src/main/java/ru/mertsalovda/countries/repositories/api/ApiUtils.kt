@@ -7,11 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mertsalovda.countries.BuildConfig
-import java.io.IOException
-import java.lang.Exception
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 /**
  * Класс для доступа к API https://restcountries.eu/rest/v2/
@@ -21,13 +16,6 @@ object ApiUtils {
     private var gson: Gson = Gson()
     private var okHttpClient: OkHttpClient? = null
     private var retrofit: Retrofit
-
-
-    val NETWORK_EXCEPTIONS = arrayListOf(
-        UnknownHostException::class.java,
-        SocketTimeoutException::class.java,
-        ConnectException::class.java
-    )
 
     init {
         retrofit = Retrofit.Builder()
