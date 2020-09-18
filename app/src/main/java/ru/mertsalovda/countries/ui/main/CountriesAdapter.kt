@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.databinding.ItemCountryBinding
@@ -66,7 +65,6 @@ class CountriesAdapter(private val listener: (Country) -> Unit) :
             GlideApp.with(itemView.context)
                 .`as`(PictureDrawable::class.java)
                 .transition(withCrossFade())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.drawable.ic_baseline_error_24)
                 .load(item.flag)
                 .listener(SvgSoftwareLayerSetter())

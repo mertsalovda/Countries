@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.extensions.printInColumn
 import ru.mertsalovda.countries.models.data.Country
+import ru.mertsalovda.countries.viewmodels.MainViewModel
 import ru.mertsalovda.countries.utils.glide.GlideApp
 import ru.mertsalovda.countries.utils.glide.SvgSoftwareLayerSetter
 
@@ -28,7 +29,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var viewModel: DetailViewModel
+    private lateinit var viewModel: MainViewModel
+
     private lateinit var countryName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +56,9 @@ class DetailActivity : AppCompatActivity() {
      *
      */
     private fun initView() {
-        viewModel.getCountry().observe(this, Observer { country(it) })
+        viewModel.countries.observe(this, Observer {
+            country(it.first { country -> country.name == countryName })
+        })
     }
 
     /**
@@ -83,7 +87,6 @@ class DetailActivity : AppCompatActivity() {
      */
     private fun initViewModel() {
         viewModel = ViewModelProvider.AndroidViewModelFactory(application)
-            .create(DetailViewModel::class.java)
-        viewModel.load(countryName)
+            .create(MainViewModel::class.java)
     }
 }

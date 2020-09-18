@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.error_layout.*
 import ru.mertsalovda.countries.R
 import ru.mertsalovda.countries.ui.detail.DetailActivity
+import ru.mertsalovda.countries.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
