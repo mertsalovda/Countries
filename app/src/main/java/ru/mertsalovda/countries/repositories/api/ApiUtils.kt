@@ -19,8 +19,8 @@ import java.net.UnknownHostException
 object ApiUtils {
     var apiService: CountriesApi? = null
     private var gson: Gson = Gson()
-    private lateinit var okHttpClient: OkHttpClient
-    private lateinit var retrofit: Retrofit
+    private var okHttpClient: OkHttpClient? = null
+    private var retrofit: Retrofit
 
 
     val NETWORK_EXCEPTIONS = arrayListOf(
@@ -45,7 +45,7 @@ object ApiUtils {
      * @return объект [OkHttpClient], если сборка DEBUG, то будет добавлен интерсептер логирущий
      * body запроса
      */
-    private fun getClient(): OkHttpClient {
+    private fun getClient(): OkHttpClient? {
         if (okHttpClient == null) {
             val builder = OkHttpClient.Builder()
             if (BuildConfig.DEBUG){
