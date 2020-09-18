@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.PictureDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -49,8 +50,18 @@ class DetailActivity : AppCompatActivity() {
      */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return if (item?.itemId == android.R.id.home){
+            finish()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
     /**
      * Привязка к данным
      *
