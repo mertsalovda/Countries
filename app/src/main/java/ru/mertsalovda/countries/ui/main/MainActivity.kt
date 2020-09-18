@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         viewModel.isLoading.observe(this, Observer { refresher.isRefreshing = it })
         viewModel.countries.observe(this, Observer {
-            if (it.isEmpty()){
+            if (it.isNullOrEmpty()) {
                 showError()
             } else {
                 hideError()

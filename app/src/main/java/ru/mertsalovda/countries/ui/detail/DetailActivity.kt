@@ -47,7 +47,6 @@ class DetailActivity : AppCompatActivity() {
      */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = countryName
     }
 
     /**
@@ -55,14 +54,15 @@ class DetailActivity : AppCompatActivity() {
      *
      */
     private fun initView() {
-        viewModel.country.observe(this, Observer { country(it) })
+        viewModel.getCountry().observe(this, Observer { country(it) })
     }
 
     /**
      * Отобразить данные на экране
      *
      */
-    private fun country(country: Country){
+    private fun country(country: Country) {
+        supportActionBar?.title = country.name
         tv_name.text = country.name
         tv_language.text = country.languages.printInColumn()
         tv_currency.text = country.currencies.printInColumn()
@@ -82,7 +82,8 @@ class DetailActivity : AppCompatActivity() {
      *
      */
     private fun initViewModel() {
-        viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(DetailViewModel::class.java)
+        viewModel = ViewModelProvider.AndroidViewModelFactory(application)
+            .create(DetailViewModel::class.java)
         viewModel.load(countryName)
     }
 }
