@@ -20,6 +20,9 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: MutableLiveData<Boolean> = _isLoading
 
+    private val _messageError = MutableLiveData<String>()
+    val messageError: MutableLiveData<String> = _messageError
+
     init {
         val countryDao = App.component.provideCountryDao()
         repository = CountryRepository(countryDao)
@@ -46,8 +49,11 @@ class MainViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { isLoading.postValue(true) }
             .doFinally { isLoading.postValue(false) }
-            .subscribe({ insert(it) }, {
-                it.printStackTrace()
+            .subscribe({
+                insert(it)
+                messageError.postValue(null)
+            }, {
+                messageError.postValue("Ошибка подключения")
             })
     }
 }

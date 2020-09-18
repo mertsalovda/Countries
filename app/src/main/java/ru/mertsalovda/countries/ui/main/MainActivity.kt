@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.error_layout.*
 import ru.mertsalovda.countries.R
@@ -59,7 +60,14 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                 adapter.updateData(it)
             }
         })
-        if(adapter.itemCount == 0){
+        viewModel.messageError.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                Snackbar.make(rv_country_list, it, Snackbar.LENGTH_LONG)
+                    .setAction("Обновить") { onRefresh() }
+                    .show()
+            }
+        })
+        if (adapter.itemCount == 0) {
             onRefresh()
         }
     }
