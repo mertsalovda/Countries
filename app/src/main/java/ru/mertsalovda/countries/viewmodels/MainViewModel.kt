@@ -15,7 +15,11 @@ class MainViewModel : ViewModel() {
 
     private val repository: CountryRepository
 
-    val countries: LiveData<List<Country>>
+    var countries: LiveData<List<Country>> = MutableLiveData<List<Country>>(mutableListOf())
+
+    // Поисковый запрос пользователей
+    private val _query = MutableLiveData<String>()
+    private val query: MutableLiveData<String> = _query
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: MutableLiveData<Boolean> = _isLoading
@@ -38,6 +42,30 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) { repository.insert(list) }
 
     /**
+     * Получить список стран соответствующих поисковому запросу query
+     *
+     * @return список стран удовлетворяющих запрос query
+     */
+    fun getCountriesByQuery(): LiveData<List<Country>> {
+        // MediatorLiveData объединяет два источника LiveData
+        val result = MediatorLiveData<List<Country>>()
+
+        // Функция фильтрации стран в соответствии с запросом query
+        val filterF = {
+            val queryStr = query.value
+            val countries = countries.value
+
+            result.value = if (queryStr.isNullOrEmpty()) countries
+            else countries?.filter { it.name.contains(queryStr, true) }
+        }
+        // Объединение LiveData в MediatorLiveData
+        result.addSource(countries) { filterF.invoke() }
+        result.addSource(query) { filterF.invoke() }
+
+        return result
+    }
+
+    /**
      * Загрузить данные из удалённого репозитория
      *
      */
@@ -55,5 +83,14 @@ class MainViewModel : ViewModel() {
             }, {
                 messageError.postValue("Ошибка подключения")
             })
+    }
+
+    /**
+     * Обновить запрос
+     *
+     * @param query текст запроса
+     */
+    fun handleSearchQuery(query: String?) {
+        this.query.value = query
     }
 }

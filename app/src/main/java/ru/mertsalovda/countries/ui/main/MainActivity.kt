@@ -2,7 +2,9 @@ package ru.mertsalovda.countries.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +38,26 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         supportActionBar?.title = "Страны"
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = "Введите название страны"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.handleSearchQuery(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.handleSearchQuery(newText)
+                return true
+            }
+
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
     /**
      * Инициализировать view-компоненты и настроить слушателей
      *
@@ -52,7 +74,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         refresher.setOnRefreshListener(this)
 
         viewModel.isLoading.observe(this, Observer { refresher.isRefreshing = it })
-        viewModel.countries.observe(this, Observer {
+        viewModel.getCountriesByQuery().observe(this, Observer {
             if (it.isNullOrEmpty()) {
                 showError()
             } else {

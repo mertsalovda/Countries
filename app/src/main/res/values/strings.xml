@@ -4,4 +4,5 @@
     <string name="title_currency">Валюта:</string>
     <string name="title_language">Язык:</string>
     <string name="title_timezone">Таймзона:</string>
+    <string name="menu_search_title">Найти страну</string>
 </resources>
