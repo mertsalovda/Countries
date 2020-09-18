@@ -2,6 +2,14 @@ package ru.mertsalovda.countries.models.data
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Модель описывает язык
+ *
+ * @property name - общепринятое название языка
+ * @property nativeName - название языка с использование алвавита данного языка
+ * @property iso639_1 - сокращённое наименование iso639_1
+ * @property iso639_2 - сокращённое наименование iso639_2
+ */
 data class Languages(
 	@SerializedName("name") val name: String,
 	@SerializedName("nativeName") val nativeName: String,

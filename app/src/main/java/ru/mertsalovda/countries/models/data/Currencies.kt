@@ -2,6 +2,13 @@ package ru.mertsalovda.countries.models.data
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Модель описывает валюту
+ *
+ * @property code - сокращённое наименование валюты
+ * @property name - название валюты
+ * @property symbol - символьное обозначение валюты
+ */
 data class Currencies(
 	@SerializedName("code")
 	val code: String,

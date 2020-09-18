@@ -22,6 +22,10 @@ import java.io.IOException
 import java.io.InputStream
 import com.bumptech.glide.request.target.Target
 
+/**
+ * Класс для преобразования svg-файла в [PictureDrawable].
+ *
+ */
 @GlideModule
 class SvgModule : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

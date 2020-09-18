@@ -13,12 +13,14 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-
+/**
+ * Класс для доступа к API https://restcountries.eu/rest/v2/
+ */
 object ApiUtils {
-    private var gson: Gson? = null
     var apiService: CountriesApi? = null
-    private var okHttpClient: OkHttpClient? = null
-    private var retrofit: Retrofit? = null
+    private var gson: Gson = Gson()
+    private lateinit var okHttpClient: OkHttpClient
+    private lateinit var retrofit: Retrofit
 
 
     val NETWORK_EXCEPTIONS = arrayListOf(
@@ -28,20 +30,27 @@ object ApiUtils {
     )
 
     init {
-        gson = Gson()
         retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_URL)
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-        apiService = retrofit!!.create<CountriesApi>(CountriesApi::class.java)
+        apiService = retrofit.create<CountriesApi>(CountriesApi::class.java)
     }
 
-    private fun getClient(): OkHttpClient? {
+    /**
+     * Подготовка объекта [OkHttpClient]
+     *
+     * @return объект [OkHttpClient], если сборка DEBUG, то будет добавлен интерсептер логирущий
+     * body запроса
+     */
+    private fun getClient(): OkHttpClient {
         if (okHttpClient == null) {
             val builder = OkHttpClient.Builder()
-            builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            if (BuildConfig.DEBUG){
+                builder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            }
             okHttpClient = builder.build()
         }
         return okHttpClient

@@ -10,10 +10,15 @@ import javax.inject.Singleton
 
 @Module
 class RepositoryModule(private val context: Context) {
-
+    /**
+     * Получить [CountryDao], для доступа к БД со странами [Country]
+     *
+     */
     @Singleton
     @Provides
     fun provideAddDataBase(): CountryDao {
-        return Room.databaseBuilder(context, AppDataBase::class.java, "database").build().countryDao()
+        return Room.databaseBuilder(context, AppDataBase::class.java, "database")
+            .build()
+            .countryDao()
     }
 }

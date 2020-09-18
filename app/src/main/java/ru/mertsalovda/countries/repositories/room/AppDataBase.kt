@@ -8,6 +8,11 @@ import ru.mertsalovda.countries.repositories.room.typeconverters.CurrenciesConve
 import ru.mertsalovda.countries.repositories.room.typeconverters.LanguageConverter
 import ru.mertsalovda.countries.repositories.room.typeconverters.TimezoneConverter
 
+/**
+ * База данных приложения.
+ * Указаны TypeConverters для полей класса [Country]
+ *
+ */
 @TypeConverters(CurrenciesConverter::class, LanguageConverter::class, TimezoneConverter::class)
 @Database(entities = [Country::class], version = 1)
 abstract class AppDataBase : RoomDatabase() {

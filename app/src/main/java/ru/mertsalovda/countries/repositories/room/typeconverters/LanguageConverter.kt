@@ -3,7 +3,17 @@ package ru.mertsalovda.countries.repositories.room.typeconverters
 import androidx.room.TypeConverter
 import ru.mertsalovda.countries.models.data.Languages
 
+/**
+ * [TypeConverter] для списка государственных языков
+ *
+ */
 class LanguageConverter {
+    /**
+     * Преобразовать коллекцию языков в строку
+     *
+     * @param languages коллекция языков [Languages]
+     * @return строковое представление коллекции [Languages]
+     */
     @TypeConverter
     fun listToString(languages: List<Languages>): String {
         val stringBuilder = StringBuilder()
@@ -22,6 +32,13 @@ class LanguageConverter {
         }
         return stringBuilder.toString()
     }
+
+    /**
+     * Преобразовать строковое представление языков в коллекцию языков
+     *
+     * @param languages строковое представление языков
+     * @return коллекцию языков [Languages]
+     */
     @TypeConverter
     fun stringToList(languages: String): List<Languages> {
         return languages.split(";")
