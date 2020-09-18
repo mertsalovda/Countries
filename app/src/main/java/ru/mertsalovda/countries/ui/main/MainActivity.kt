@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                 adapter.updateData(it)
             }
         })
+        if(adapter.itemCount == 0){
+            onRefresh()
+        }
     }
 
     /**
@@ -66,9 +69,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
      *
      */
     private fun initViewModel() {
-        viewModel =
-            ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
-        onRefresh()
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
     override fun onRefresh() {
