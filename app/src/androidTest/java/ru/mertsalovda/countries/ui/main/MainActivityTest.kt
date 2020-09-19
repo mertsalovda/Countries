@@ -27,7 +27,7 @@ class MainActivityTest {
      * Проверка на несуществующий текст в списке
      */
     @Test(expected = PerformException::class)
-    fun itemWithText_doesNotExist() {
+    fun item_with_text_does_not_exist() {
         onView(withId(R.id.rv_country_list))
             .perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
