@@ -1,4 +1,4 @@
-package ru.mertsalovda.countries
+package ru.mertsalovda.countries.repositories.room.typeconverters
 
 import org.junit.Before
 import org.junit.Test
